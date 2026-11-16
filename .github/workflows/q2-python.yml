@@ -1,5 +1,13 @@
 name: Python
 
+on:
+  pull_request:
+    types:
+      - assigned
+  push:
+    braches:
+      - "dev/**"
+      - "dev"
 
 jobs:
   build:
@@ -20,3 +28,7 @@ jobs:
       - name: Check
         run: python -m py_compile src/main.py
 
+      - name: Test
+        run: |
+          ruff check .
+          pytest -v
