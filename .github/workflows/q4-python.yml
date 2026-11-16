@@ -17,6 +17,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
 
       - name: Install
         run: |
@@ -47,5 +49,3 @@ jobs:
 
       - name: run-docker
         run: docker run -d app 8080:8080
-
-
