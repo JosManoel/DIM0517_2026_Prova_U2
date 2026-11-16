@@ -2,10 +2,12 @@ name: Python Q1
 
 on:
   push:
-    braches:
+    branches:
       - "feature/**"
     patchs:
       - "src/**"
+      - "**.py"
+      - "Dockerfile"
 
 jobs:
   build:
