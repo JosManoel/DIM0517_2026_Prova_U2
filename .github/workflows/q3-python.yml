@@ -1,5 +1,12 @@
 name: Python Q3
 
+on:
+  pull_request:
+    types:
+      - assigned
+    branches:
+      - "dev/**"
+      - "dev"
 
 jobs:
   build:
@@ -22,3 +29,16 @@ jobs:
       - name: Check
         run: python -m py_compile src/main.py
 
+  tag:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: CreateTag
+        env: TAG="build-${{ github.run_id }}"
+        run: git tag $TAG
