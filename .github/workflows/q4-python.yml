@@ -1,5 +1,8 @@
 name: Python Q4
 
+on:
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,7 +19,33 @@ jobs:
           python-version: "3.13"
 
       - name: Install
-        run: pip install -r requirements-dev.txt
+        run: |
+          pip install -r requirements-dev.txt
+          pip install -r requirements.txt
 
       - name: Check
         run: python -m py_compile src/main.py
+
+      - name: Test
+        run: |
+          ruff check .
+          pytest -v
+
+  build_docker:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: check_docker
+        run: docker -v
+
+      - name: build-docker
+        run: docker build -t app
+
+      - name: run-docker
+        run: docker run -d app 8080:8080
+
+
